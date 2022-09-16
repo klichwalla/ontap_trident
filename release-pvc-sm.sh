@@ -97,8 +97,7 @@ if [[ $SNAPMIRRORDESTCOUNT -eq 0 ]] ; then
         exit
 elif [[ $SNAPMIRRORDESTCOUNT -eq 1 ]] ; then
         echo -e "INFO: Found $SNAPMIRRORDESTCOUNT SnapMirror relationships"
-        # { "records": [ { "uuid": "280ae167-33a1-11ed-a9f9-90e2ba9be1cc", "source": { "path": "ocp2:dev_pvc_dc7cd60f_f2ed_400b_b4ff_daf2b11e7362", "svm": { "name": "ocp2" } }, "destination": {
-"path": "ocp1:dp_dev_pvc_dc7cd60f_f2ed_400b_b4ff_daf2b11e7362", "svm": { "name": "ocp1" } } } ], "num_records": 1 }
+        # { "records": [ { "uuid": "280ae167-33a1-11ed-a9f9-90e2ba9be1cc", "source": { "path": "ocp2:dev_pvc_dc7cd60f_f2ed_400b_b4ff_daf2b11e7362", "svm": { "name": "ocp2" } }, "destination": {"path": "ocp1:dp_dev_pvc_dc7cd60f_f2ed_400b_b4ff_daf2b11e7362", "svm": { "name": "ocp1" } } } ], "num_records": 1 }
         SNAPMIRRORUUID=`echo $SNAPMIRRORDEST | jq -j '.records[0].uuid'`
         SOURCEPATH=`echo $SNAPMIRRORDEST | jq -j '.records[0].source.path'`
         DESTPATH=`echo $SNAPMIRRORDEST | jq -j '.records[0].destination.path'`
@@ -108,7 +107,6 @@ elif [[ $SNAPMIRRORDESTCOUNT -eq 1 ]] ; then
 
         echo -e "INFO: Executing REST call to $SVMMGMT"
         SNAPMIRRORRELEASE=`curl -s -S -k -u ${SVMUSER}:${SVMPASS} -X DELETE "https://${SVMMGMT}/api/snapmirror/relationships/${SNAPMIRRORUUID}/?source_only=true&return_timeout=60"`
-        echo $SNAPMIRRORRELEASE
 
         ### monitor ONTAP job for status
         JOBCOMPLETE=NO
